@@ -413,19 +413,6 @@ lizmap-mouse-position input, lizmap-mouse-position select { font-family: var(--f
 /* Geolocalisation 3.9 : champ "secondes" trop etroit en border-box */
 #mini-dock .geolocation input[type='number'], #mini-dock lizmap-geolocation input[type='number'] { width: 64px !important; min-width: 64px; height: 30px; padding: 0 6px; }
 
-/* ================= Logo Geolab =================
-   Noir, vertical (150x113) : pose a nu sur le cartouche, centre au-dessus du rail.
-   Le fichier est a cote des CSS ; url() relative sur sa propre ligne (getCssFile la reecrit vers getMedia). */
-#logo {
-  background-image:
-    url(Geolab-Logo-Verti-Noir.png) !important;
-  background-color: transparent !important; border-radius: 0 !important;
-  background-size: contain !important; background-position: center !important; background-repeat: no-repeat !important;
-  left: calc(var(--gap) + 5px) !important; top: calc(var(--gap) + 10px) !important;
-  width: 38px !important; max-width: 38px !important; height: 32px !important; max-height: 32px !important;
-}
-#logo a, #logo img { opacity: 0; } /* l'ancien logo eventuel en <img> ; le lien reste cliquable */
-
 /* ================= Popup : lisibilite =================
    Largeur fixe du panneau (--dock-w) : le cartouche ne bouge jamais. */
 #popupcontent .lizmapPopupDiv { margin-left: 0 !important; line-height: 1.5; }

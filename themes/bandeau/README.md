@@ -83,7 +83,7 @@ Le texte est dans la variable `--footer-text`, entre guillemets simples (Lizmap 
   `media/themes/<nom du projet>/css/main.css` (même nom que le `.qgs`, sans l'extension) contenant :
 
   ```css
-  :root:root { --footer-text: 'Donn\e9 es : DGFiP, IGN - R\e9 alisation : Geolab'; }
+  :root:root { --footer-text: 'Donn\e9 es : DGFiP, IGN - R\e9 alisation : Mon organisme'; }
   ```
 
   Lizmap charge ce fichier après le thème du dépôt, uniquement pour ce projet.
@@ -107,8 +107,7 @@ et `--foot: 0px;`.
 
 ## Logo
 
-`Geolab-Logo-Verti-Noir.png`, sur une tuile blanche à gauche du bandeau. Pour le logo d'une collectivité :
-remplacer le fichier dans `src/` (et le nom dans `map.css`, bloc « Logo Geolab »), puis régénérer.
+Le thème ne fournit pas de logo : il affiche le logo d'en-tête défini dans l'administration Lizmap (Apparence, « Logo d'en-tête »), sur une tuile blanche à gauche du bandeau.
 
 ## Téléphones et tablettes
 

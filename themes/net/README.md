@@ -90,8 +90,7 @@ ou `--c-accent`, recalculez ces trois valeurs (couleur inverse : 255 moins chaqu
 
 ## Logo
 
-`Geolab-Logo-Verti-Noir.png`, à gauche de la barre de titre. Pour en changer : remplacer le fichier dans `src/`
-(et le nom dans `map.css`, bloc « Logo Geolab »), puis régénérer.
+Le thème ne fournit pas de logo : il affiche le logo d'en-tête défini dans l'administration Lizmap (Apparence, « Logo d'en-tête »), à gauche de la barre de titre.
 
 ## Téléphones et tablettes
 
