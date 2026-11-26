@@ -1,0 +1,78 @@
+/* SOURCE - NE PAS INSTALLER CE FICHIER DANS LIZMAP (les icones deviendraient des carres noirs).
+   Installer media/themes/default/css/main.css, genere par : python3 tools/build.py */
+/* ==== Theme Lizmap "Net" - main.css ====
+   Base : theme Cartouche (vertical). Tokens, police et couleurs propres a Net.
+   Surcouche du theme par defaut : polices, tokens, boutons et champs.
+   Chargee apres le theme par defaut (media/themes/default/css/main.css).
+   Polices chargees depuis Google Fonts : a heberger localement si besoin (RGPD).
+*/
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap");
+
+:root {
+  /* ===== Couleurs =====
+     --c-ink    : encre (texte, icones). Les icones blanches de Lizmap sont inversees par le theme :
+                  l'encre doit rester foncee sur fond clair.
+     --c-accent : accent (outil actif, focus de la recherche, cases cochees, boutons principaux).
+     --c-paper  : fond de la barre de titre, de la colonne d'outils et des panneaux.
+     --c-mist / --c-rule : teinte de survol et filets. */
+  --c-ink: #1b2533;
+  --c-accent: #1a56db;
+  --c-paper: #ffffff;
+  --c-mist: #f2f5f9;
+  --c-rule: #d8dee6;
+  --c-muted: #556070;
+  --c-faint: #8a94a3;
+  --c-on-ink: #ffffff;
+  --c-ink-soft: color-mix(in srgb, var(--c-ink) 85%, #fff);
+  --c-tint: color-mix(in srgb, var(--c-ink), var(--c-accent));
+  --c-hydro: var(--c-accent);                                        /* ancien nom, conserve */
+  /* Type */
+  --f-display: "Inter", system-ui, sans-serif;
+  --f-body: "Inter", system-ui, sans-serif;
+  --f-data: "IBM Plex Mono", ui-monospace, monospace;
+  /* Geometrie */
+  --gap: 12px;
+  --rail: 48px;          /* base Cartouche */
+  --bar: 60px;           /* hauteur de la barre de titre */
+  --side: 208px;         /* largeur de la colonne des outils */
+  --dock-w: 380px;       /* largeur du panneau gauche */
+  --col: calc(var(--rail) + var(--gap) + var(--dock-w));
+  --top: 84px;
+  --r: 8px;
+  --r-sm: 4px;
+  --pad: 18px;      /* marge interieure des panneaux, alignee sur le titre */
+  --pad-sm: 14px;   /* idem pour les mini-panneaux */
+  --scrollbar: 12px; /* largeur d'un ascenseur fin (scrollbar-width: thin) */
+  --lift: 0 6px 20px -10px rgb(27 37 51 / 30%), 0 1px 2px rgb(27 37 51 / 10%);
+  --neatline: 0 0 0 1px var(--c-ink), 0 0 0 4px var(--c-paper), 0 0 0 5px var(--c-ink);
+  --focus: 0 0 0 3px color-mix(in srgb, var(--c-hydro) 45%, transparent);
+  --ease: cubic-bezier(.2, 0, 0, 1);
+  /* Variables Lizmap existantes, re-mappees */
+  --header-color: transparent;
+  --color-background-primary: var(--c-paper);
+  --color-background-primary-content: var(--c-paper);
+  --color-text-primary: var(--c-ink);
+  --color-text-primary-content: var(--c-ink);
+  --color-contrasted-elements: var(--c-hydro);
+  --color-contrasted-elements-light: var(--c-mist);
+}
+
+body { padding-top: 0 !important; font-family: var(--f-body); color: var(--c-ink); -webkit-font-smoothing: antialiased; }
+#content { height: 100vh !important; }
+
+/* ================= Boutons & champs ================= */
+button.btn, a.btn, input.btn, label.btn {
+  font-family: var(--f-body); font-weight: 500; border-radius: var(--r-sm);
+  background-color: var(--c-mist); color: var(--c-ink); border: 0;
+  transition: background-color .15s var(--ease), color .15s var(--ease);
+}
+button.btn:hover, a.btn:hover, input.btn:hover, button.btn.active, a.btn.active {
+  background-color: var(--c-ink); color: var(--c-on-ink);
+}
+.btn.btn-primary, .btn.btn-primary:focus { background-color: var(--c-accent); color: var(--c-on-ink); }
+.btn:focus-visible, .form-control:focus, .form-select:focus { box-shadow: var(--focus) !important; outline: 0; border-color: var(--c-hydro); }
+.form-control, .form-select { border-radius: var(--r-sm); border-color: var(--c-rule); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: 0s !important; }
+}

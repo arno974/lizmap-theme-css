@@ -1,0 +1,193 @@
+/* SOURCE - NE PAS INSTALLER CE FICHIER DANS LIZMAP.
+   Installer media/themes/default/css/media.css, genere par : python3 tools/build.py */
+/* ==== Theme Lizmap "Tiroir" - media.css : ecrans tactiles et telephones ====
+   Lizmap charge ce fichier apres map.css. Depend des tokens de main.css.
+   Sur ecran tactile, Lizmap remplace la barre d'outils par un bouton menu et un tiroir :
+   ce fichier les habille, et adapte l'en-tete et les panneaux a la taille d'un telephone.
+   La partie commune est identique dans tous les themes ; la fin du fichier est propre a ce theme.
+*/
+
+/* Valeurs communes aux ecrans tactiles */
+:root {
+  --m-gap: 10px;     /* marge au bord de l'ecran sur telephone */
+  --m-btn: 44px;     /* bouton menu, boutons de compte, hauteur de la recherche : taille d'une cible tactile */
+  --m-auth-n: 1;     /* nombre de boutons de compte (connexion, ou administration + utilisateur) */
+}
+body:has(#headermenu :is(ul.navbar-nav, ul.nav) > li:nth-child(2)) { --m-auth-n: 2; }
+body:has(#headermenu :is(ul.navbar-nav, ul.nav) > li:nth-child(3)) { --m-auth-n: 3; }
+
+/* ================= Ecran tactile (telephone, tablette) =================
+   Lizmap affiche alors son bouton menu (#menuToggle) et range les outils dans un tiroir lateral (#mapmenu),
+   quelle que soit la largeur. Le theme les habille ; les selecteurs #content #mapmenu l'emportent
+   sur les regles de survol du theme (sur un ecran tactile, le survol reste colle apres un appui). */
+@media (pointer: coarse) {
+  #menuToggle {
+    position: fixed !important; top: var(--gap) !important; left: var(--gap) !important; z-index: 9000 !important;
+    display: flex !important; flex-direction: column; justify-content: space-between;
+    width: var(--m-btn); height: var(--m-btn); box-sizing: border-box; padding: 15px 12px !important;
+    background: var(--m-btn-bg) !important; border-radius: var(--r) !important; box-shadow: var(--m-btn-shadow, var(--lift));
+    cursor: pointer; transition: none !important;
+  }
+  /* Trois traits, puis une croix quand le tiroir est ouvert */
+  #menuToggle span {
+    width: 20px !important; height: 2px !important; margin: 0 !important; border-radius: 1px !important;
+    background: var(--m-btn-fg) !important; transform-origin: center !important;
+    transition: transform .2s var(--ease), opacity .15s var(--ease) !important;
+  }
+  #menuToggle.opened span:nth-child(1) { transform: translateY(6px) rotate(45deg) !important; }
+  #menuToggle.opened span:nth-child(2) { opacity: 0 !important; transform: none !important; }
+  #menuToggle.opened span:nth-child(3) { transform: translateY(-6px) rotate(-45deg) !important; }
+
+  /* Tiroir : pleine hauteur a gauche, outils en liste avec leur nom */
+  #content #mapmenu {
+    position: fixed !important; inset: 0 auto 0 0 !important;
+    width: min(300px, 86vw) !important; min-width: 0 !important; max-width: none !important; height: auto !important; max-height: none !important;
+    margin: 0 !important; padding: calc(var(--gap) * 2 + var(--m-btn)) 0 var(--gap) !important;
+    border: 0 !important; border-radius: 0 var(--r) var(--r) 0 !important; box-shadow: none !important;
+    overflow-x: hidden !important; overflow-y: auto !important; z-index: 5001 !important;
+    transform: translateX(-100%) !important; visibility: hidden;
+    transition: transform .3s var(--ease), visibility 0s .3s !important;
+  }
+  #content #menuToggle.opened ~ #mapmenu {
+    transform: none !important; visibility: visible; box-shadow: var(--lift) !important;
+    transition: transform .3s var(--ease) !important;
+  }
+  #content #mapmenu::before, #content #mapmenu::after { display: none !important; }
+  #content #mapmenu > div { position: static !important; display: block !important; width: auto !important; height: auto !important; }
+  #content #mapmenu .nav-list {
+    display: flex !important; flex-direction: column !important; align-items: stretch !important;
+    width: auto !important; height: auto !important; margin: 0 !important; padding: 0 10px !important;
+    background: transparent !important; opacity: 1 !important;
+  }
+  /* (specificite volontairement basse : les filets entre groupes d'outils du theme restent prioritaires) */
+  #mapmenu > div > .nav-list > li { width: auto !important; margin: 1px 0 !important; background: transparent !important; }
+  #content #mapmenu .nav-list > li > a {
+    display: flex !important; align-items: center; gap: 14px;
+    width: auto !important; min-height: 48px; margin: 0 !important; padding: 0 12px !important; box-sizing: border-box !important;
+    color: var(--m-fg) !important; text-align: left; text-decoration: none !important;
+  }
+  #content #mapmenu .nav-list > li.active > a { color: var(--m-fg-active) !important; }
+  /* En mode tactile, Lizmap garde l'icone blanche sur l'outil actif (prevue pour son fond bleu) :
+     chaque theme dit s'il faut l'inverser (--m-active-icon) pour qu'elle reste visible sur son fond */
+  #content #mapmenu .nav-list > li.active > a > :not(.menu-title) { filter: var(--m-active-icon, none) !important; }
+  #content #mapmenu .menu-title {
+    display: block !important; flex: 1 1 auto; min-width: 0; margin: 0 !important; opacity: 1 !important;
+    font: 500 15px/1.2 var(--f-body) !important; text-transform: none !important;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  /* Infobulles : inutiles au doigt (le nom est ecrit), et elles restent affichees apres un appui */
+  #content > .tooltip, body > .tooltip { display: none !important; }
+}
+
+/* ================= Telephone =================
+   Tactile et moins de 900px de large (seuil de l'affichage mobile de Lizmap), ou tactile et tres peu haut
+   (telephone a l'horizontale). En-tete compact ; panneaux et mini-panneaux en feuille depuis le bas
+   de l'ecran : la carte reste visible au-dessus pendant qu'on coche une couche ou qu'on mesure.
+   Chaque theme definit --m-head (bas de l'en-tete) et la place de la recherche (--m-search-*). */
+@media (pointer: coarse) and (max-width: 899px), (pointer: coarse) and (max-height: 500px) {
+  #menuToggle { top: var(--m-gap) !important; left: var(--m-gap) !important; }
+  #content #mapmenu { padding-top: calc(var(--m-gap) * 2 + var(--m-btn)) !important; }
+
+  /* Cartouche : le titre seul, tronque proprement */
+  #title h2 { display: none !important; }
+  #title h1 { white-space: nowrap !important; overflow: hidden !important; text-overflow: ellipsis !important; }
+
+  /* Compte : boutons a icone seule, en haut a droite */
+  #headermenu {
+    position: fixed !important; top: var(--m-gap) !important; right: var(--m-gap) !important; left: auto !important; bottom: auto !important;
+    width: auto !important; height: var(--m-btn) !important; padding: 0 !important; margin: 0 !important;
+  }
+  #headermenu #auth, #headermenu #auth > .pull-right { height: var(--m-btn) !important; }
+  #headermenu.mobile #auth :is(ul.navbar-nav, ul.nav) {
+    position: static !important; height: var(--m-btn) !important; margin: 0 !important; padding: 0 !important; gap: 0 !important;
+  }
+  #headermenu :is(ul.navbar-nav, ul.nav) > li > a {
+    justify-content: center; min-width: var(--m-btn); height: var(--m-btn); padding: 0 !important; box-sizing: border-box;
+  }
+  #headermenu :is(ul.navbar-nav, ul.nav) > li > a > :is(.text, .caret) { display: none !important; }
+
+  /* Recherche : place donnee par le theme ; 16px pour que le telephone ne zoome pas a la saisie */
+  #headermenu.mobile #nominatim-search {
+    position: fixed !important; top: var(--m-search-top) !important; left: var(--m-search-l) !important; right: var(--m-search-r) !important;
+    width: auto !important; height: var(--m-btn) !important; margin: 0 !important; transform: none !important;
+  }
+  #headermenu.mobile #nominatim-search :is(#search-query, input) {
+    width: 100% !important; height: var(--m-btn) !important; font-size: 16px !important; position: static !important;
+  }
+  #headermenu.mobile #nominatim-search #search-query::placeholder { color: var(--c-muted) !important; }
+  #headermenu.mobile #nominatim-search::before { top: calc(var(--m-btn) / 2) !important; }
+  #content.mobile #lizmap-search {
+    position: fixed !important; top: calc(var(--m-search-top) + var(--m-btn) + 6px) !important; bottom: auto !important;
+    left: var(--m-gap) !important; right: var(--m-gap) !important; width: auto !important; max-width: none !important;
+    max-height: 55vh !important; padding: 6px 0 !important; transform: none !important; border-radius: var(--r) !important;
+  }
+
+  /* Messages (mesure, erreurs) : pleine largeur sous l'en-tete */
+  #content.mobile #message {
+    top: calc(var(--m-head) + 4px) !important; left: var(--m-gap) !important; right: var(--m-gap) !important;
+    width: auto !important; margin: 0 !important; transform: none !important;
+  }
+
+  /* Panneaux (couches, popup, filtre...) : feuille depuis le bas, haute d'au moins 420px quand l'ecran
+     le permet (a l'horizontale, elle remonte jusqu'a l'en-tete) */
+  #docks-wrapper {
+    top: max(var(--m-head), min(42vh, 100vh - 420px)) !important; bottom: var(--m-foot, 0px) !important; left: 0 !important; right: 0 !important;
+    width: auto !important; height: auto !important; gap: 0 !important;
+  }
+  #dock, #right-dock, #sub-dock {
+    width: auto !important; max-width: none !important; height: 100% !important; margin: 0 !important; flex: 1 1 auto;
+    border: 0 !important; border-radius: var(--r) var(--r) 0 0 !important; box-shadow: 0 -8px 24px -10px rgb(0 0 0 / 30%) !important;
+  }
+  /* Tableau de donnees : toute la feuille (Lizmap l'alignait a droite, a la largeur de son contenu) */
+  #bottom-dock {
+    align-self: stretch !important; width: auto !important; height: 100% !important; margin: 0 !important; opacity: 1 !important;
+    border-radius: var(--r) var(--r) 0 0 !important;
+  }
+
+  /* Mini-panneaux (mesure, impression, selection...) : feuille depuis le bas, hauteur du contenu */
+  #mini-dock {
+    top: auto !important; bottom: var(--m-foot, 0px) !important; left: 0 !important; right: 0 !important;
+    width: auto !important; min-width: 0 !important; max-width: none !important; max-height: 58vh; overflow-y: auto;
+    z-index: 1150 !important;  /* au-dessus d'un panneau reste ouvert (Lizmap ne le ferme pas) */
+    margin: 0 !important; border: 0 !important; border-radius: var(--r) var(--r) 0 0 !important;
+    box-shadow: 0 -8px 24px -10px rgb(0 0 0 / 30%) !important;
+  }
+  /* 3.9 : conteneur vide (aucun outil ouvert) : il couvrait la carte d'une feuille blanche */
+  #mini-dock:has(> .tabbable):not(:has(> .tabbable > .tab-content > .tab-pane.active)) { display: none !important; }
+
+  /* Controles de carte (3.10) sous l'en-tete ; vue d'ensemble et coordonnees masquees : la carte d'abord */
+  #navbar { top: calc(var(--m-head) + 4px) !important; right: var(--m-gap) !important; }
+  #overview-box { display: none !important; }
+}
+
+/* Telephone a l'horizontale : Lizmap epingle le fond de carte en bas du panneau des couches,
+   il ne restait qu'une ligne pour l'arbre ; on fait defiler tout le panneau d'un bloc */
+@media (pointer: coarse) and (max-height: 500px) {
+  #dock-content > #switcher { display: block !important; height: auto !important; max-height: none !important; }
+  #switcher > #switcher-layers-container { height: auto !important; max-height: none !important; overflow: visible !important; }
+}
+
+/* ================= Propre a ce theme ================= */
+:root {
+  --m-btn-bg: var(--c-paper); --m-btn-fg: var(--c-ink);     /* bouton menu : pastille papier a filet, comme la recherche */
+  --m-fg: var(--c-ink); --m-fg-active: var(--c-ink);        /* libelles du tiroir */
+  --m-active-icon: invert(1) opacity(.82);                  /* icone de l'outil actif : blanche chez Lizmap, inversee ici */
+}
+/* Tablette : plus de rail ; le bouton menu prend sa place en haut a gauche, le logo (case du rail) est masque */
+@media (pointer: coarse) {
+  #menuToggle { top: calc((var(--head) - var(--m-btn)) / 2) !important; border: 1px solid var(--c-rule); border-radius: 22px !important; }
+  #logo { display: none !important; }
+  #docks-wrapper { left: 0 !important; }
+  #title { left: 20px !important; }
+}
+/* Telephone : une seule ligne = menu, recherche, compte ; titre en bas a gauche */
+@media (pointer: coarse) and (max-width: 899px), (pointer: coarse) and (max-height: 500px) {
+  :root {
+    --m-head: calc(var(--m-gap) * 2 + var(--m-btn));
+    --m-search-top: var(--m-gap); --m-search-l: calc(var(--m-gap) * 2 + var(--m-btn));
+    --m-search-r: calc(var(--m-gap) * 2 + var(--m-auth-n) * var(--m-btn));
+  }
+  #menuToggle { top: var(--m-gap) !important; left: var(--m-gap) !important; }
+  #headermenu { top: var(--m-gap) !important; }
+  #title { left: var(--m-gap) !important; bottom: 16px !important; max-width: calc(100vw - var(--m-gap) * 2 - 120px) !important; }
+}

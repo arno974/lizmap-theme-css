@@ -1,0 +1,86 @@
+/* SOURCE - NE PAS INSTALLER CE FICHIER DANS LIZMAP (les icones deviendraient des carres noirs).
+   Installer media/themes/default/css/main.css, genere par : python3 tools/build.py */
+/* ==== Theme Lizmap "Bandeau" - main.css ====
+   Base : theme Cartouche (vertical). Tokens, police et couleurs propres a Bandeau.
+   Surcouche du theme par defaut : polices, tokens, boutons et champs.
+   Chargee apres le theme par defaut (media/themes/default/css/main.css).
+   Polices chargees depuis Google Fonts : a heberger localement si besoin (RGPD).
+*/
+@import url("https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap");
+
+:root {
+  /* ===== Couleur de la collectivite : ces trois lignes suffisent pour changer de client =====
+     --brand      : bandeau, titres de panneau, accent.
+     --brand-dark : rail d'outils et controles de zoom (nuance plus foncee).
+     --brand-soft : outil ou bouton actif sur le rail et le zoom (nuance plus claire). */
+  --brand: #1e4d8c;
+  --brand-dark: #163b6c;
+  --brand-soft: #3a6fb5;
+  /* ===== Autres couleurs =====
+     --c-ink : texte (doit rester fonce). --c-paper : panneaux, pied de page. */
+  --c-ink: #1d2733;
+  --c-accent: var(--brand);
+  --c-paper: #ffffff;
+  --c-mist: #eef2f7;
+  --c-rule: #d7dee8;
+  --c-muted: #55606e;
+  --c-faint: #8b95a3;
+  --c-on-ink: #ffffff;
+  --c-ink-soft: color-mix(in srgb, var(--c-ink) 85%, #fff);
+  --c-tint: color-mix(in srgb, var(--c-ink), var(--c-accent));
+  --c-hydro: var(--c-accent);                                        /* ancien nom, conserve */
+  /* Type */
+  --f-display: "Source Sans 3", system-ui, sans-serif;
+  --f-body: "Source Sans 3", system-ui, sans-serif;
+  --f-data: "IBM Plex Mono", ui-monospace, monospace;
+  /* Geometrie */
+  --gap: 12px;
+  --rail: 48px;          /* rail d'outils */
+  --dock-w: 380px;       /* largeur du panneau gauche */
+  --bar: 64px;           /* hauteur du bandeau */
+  --foot: 30px;          /* hauteur du pied de page */
+  /* Texte du pied de page : sources, mentions, contact... (entre guillemets simples).
+     Lettres accentuees en code CSS pour eviter tout souci d'encodage : \e0 = a accent grave,
+     \e9 = e accent aigu, \e8 = e accent grave. Le code avale l'espace qui le suit : une espace pour coller la lettre suivante
+     (Donn\e9 es = Donnees), deux pour garder un vrai espace. Detail dans le README. */
+  --footer-text: 'Sources et mentions : texte \e0  personnaliser pour chaque projet';
+  --col: calc(var(--rail) + var(--gap) + var(--dock-w));
+  --top: 84px;
+  --r: 8px;
+  --r-sm: 4px;
+  --pad: 18px;      /* marge interieure des panneaux, alignee sur le titre */
+  --pad-sm: 14px;   /* idem pour les mini-panneaux */
+  --scrollbar: 12px; /* largeur d'un ascenseur fin (scrollbar-width: thin) */
+  --lift: 0 8px 22px -12px rgb(29 39 51 / 35%), 0 1px 3px rgb(29 39 51 / 12%);
+  --neatline: 0 0 0 1px var(--c-ink), 0 0 0 4px var(--c-paper), 0 0 0 5px var(--c-ink);
+  --focus: 0 0 0 3px color-mix(in srgb, var(--c-hydro) 45%, transparent);
+  --ease: cubic-bezier(.2, 0, 0, 1);
+  /* Variables Lizmap existantes, re-mappees */
+  --header-color: transparent;
+  --color-background-primary: var(--c-paper);
+  --color-background-primary-content: var(--c-paper);
+  --color-text-primary: var(--c-ink);
+  --color-text-primary-content: var(--c-ink);
+  --color-contrasted-elements: var(--c-hydro);
+  --color-contrasted-elements-light: var(--c-mist);
+}
+
+body { padding-top: 0 !important; font-family: var(--f-body); color: var(--c-ink); -webkit-font-smoothing: antialiased; }
+#content { height: 100vh !important; }
+
+/* ================= Boutons & champs ================= */
+button.btn, a.btn, input.btn, label.btn {
+  font-family: var(--f-body); font-weight: 500; border-radius: var(--r-sm);
+  background-color: var(--c-mist); color: var(--c-ink); border: 0;
+  transition: background-color .15s var(--ease), color .15s var(--ease);
+}
+button.btn:hover, a.btn:hover, input.btn:hover, button.btn.active, a.btn.active {
+  background-color: var(--c-ink); color: var(--c-on-ink);
+}
+.btn.btn-primary, .btn.btn-primary:focus { background-color: var(--c-accent); color: var(--c-on-ink); }
+.btn:focus-visible, .form-control:focus, .form-select:focus { box-shadow: var(--focus) !important; outline: 0; border-color: var(--c-hydro); }
+.form-control, .form-select { border-radius: var(--r-sm); border-color: var(--c-rule); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: 0s !important; }
+}
