@@ -113,9 +113,7 @@ quel que soit son contenu.
 
 ## Logo
 
-Le logo est le fichier `Geolab-Logo-Verti-Noir.png`, placé à côté des CSS et référencé en relatif dans `map.css`
-(bloc « Logo Geolab »). Pour en changer : remplacer le fichier dans `src/` (et le nom dans `map.css` si besoin),
-puis régénérer : les images de `src/` sont copiées avec les CSS.
+Le thème ne fournit pas de logo : il affiche le logo d'en-tête défini dans l'administration Lizmap (Apparence, « Logo d'en-tête »), dans le cartouche, centré au-dessus du rail.
 
 ## Téléphones et tablettes
 
