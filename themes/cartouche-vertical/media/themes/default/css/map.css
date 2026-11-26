@@ -336,6 +336,9 @@ lizmap-mouse-position input, lizmap-mouse-position select { font-family: var(--f
 #right-dock, #right-dock *, #bottom-dock, #bottom-dock *, #mini-dock, #mini-dock *, #navbar, #navbar *,
 #overview-box, #overview-box *, #lizmap-search, #lizmap-search *, #message, #message *,
 .ui-autocomplete, .ui-autocomplete * { box-sizing: border-box; }
+/* Icones sprite Bootstrap (i des couches...) : le padding ajoute par Lizmap doit rester hors des 14px,
+   sinon l'image est decalee et rognee */
+:is(#headermenu, #dock, #right-dock, #bottom-dock, #mini-dock, #navbar, #lizmap-search) :is([class^='icon-'], [class*=' icon-']) { box-sizing: content-box; }
 
 /* Rail : les liens gardent content-box (20px d'icone + 10px de marge) */
 #mapmenu .nav-list > li > a { box-sizing: content-box !important; }
